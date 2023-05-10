@@ -13,8 +13,8 @@
 ```json
 {
     "id": 100, // optional, allowed: numbers
-"cardname": "test", // required, allowed: letters
-"ownerid": 1,   // required, allowed: numbers
+    "cardname": "test", // required, allowed: letters
+    "ownerid": 1,   // required, allowed: numbers
     "cardtype": "Gold" // required, allowed: [ "Gold", "Silver", "Iron", "Composite"]
 }
 ```
@@ -25,8 +25,8 @@
 ```json
 {
     "id": 100, // optional, allowed: numbers
-"cardname": "test", // required, allowed: letters
-"ownerid": 1,   // required, allowed: numbers
+    "cardname": "test", // required, allowed: letters
+    "ownerid": 1,   // required, allowed: numbers
     "cardtype": "Gold" // required, allowed: [ "Gold", "Silver", "Iron", "Composite"]
 }
 ```
