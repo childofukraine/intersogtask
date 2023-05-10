@@ -5,6 +5,7 @@ import { RequestHandler } from "express";
 export class CardValidator {
   static cardBody: RequestHandler = (req, res, next) => {
     const schema = Joi.object({
+      id: Joi.number().optional(),
       cardname: Joi.string().max(32).required(),
       ownerid: Joi.number().required(),
       cardtype: Joi.string()

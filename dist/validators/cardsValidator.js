@@ -9,6 +9,7 @@ const boom_1 = __importDefault(require("@hapi/boom"));
 class CardValidator {
     static cardBody = (req, res, next) => {
         const schema = joi_1.default.object({
+            id: joi_1.default.number().optional(),
             cardname: joi_1.default.string().max(32).required(),
             ownerid: joi_1.default.number().required(),
             cardtype: joi_1.default.string()
