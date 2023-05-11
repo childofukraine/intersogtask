@@ -24,7 +24,20 @@ class CardsRepository {
             .where((0, drizzle_orm_1.eq)(schema_1.cardsTable.cardId, id));
         return card;
     }
-    static async editCard(cardUpd) {
+    static async editCard(newId, cardUpd) {
+        if (newId !== undefined) {
+            const newCard = await database
+                .update(schema_1.cardsTable)
+                .set({
+                cardId: newId,
+                cardName: cardUpd.cardName,
+                ownerId: cardUpd.ownerId,
+                cardType: cardUpd.cardType,
+            })
+                .where((0, drizzle_orm_1.eq)(schema_1.cardsTable.cardId, cardUpd.cardId))
+                .returning();
+            return newCard;
+        }
         const newCard = await database
             .update(schema_1.cardsTable)
             .set({

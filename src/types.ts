@@ -21,15 +21,19 @@ export interface CreateCardRequest extends Request {
 }
 
 export interface GetCardsReponse {
+  message: string;
   data: Card[];
 }
 
 export interface GetCardByIdResponse {
+  message: string;
+
   data: Card[];
 }
 
 export interface UpdateCardRequest extends Request {
   body: {
+    id?: number;
     cardname: string;
     ownerid: number;
     cardtype: string;

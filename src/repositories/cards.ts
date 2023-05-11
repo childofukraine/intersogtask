@@ -11,13 +11,13 @@ export class CardsRepository {
     return card;
   }
 
-  static async getCards(): Promise<Card[] | null> {
+  static async getCards(): Promise<Card[] | []> {
     const cards = await database.select().from(cardsTable);
 
     return cards;
   }
 
-  static async getCardById(id: number): Promise<Card[] | null> {
+  static async getCardById(id: number): Promise<Card[] | []> {
     const card = await database
       .select()
       .from(cardsTable)
@@ -26,7 +26,21 @@ export class CardsRepository {
     return card;
   }
 
-  static async editCard(cardUpd: Card): Promise<Card[] | null> {
+  static async editCard(newId: number, cardUpd: Card): Promise<Card[] | []> {
+    if (newId !== undefined) {
+      const newCard = await database
+        .update(cardsTable)
+        .set({
+          cardId: newId,
+          cardName: cardUpd.cardName,
+          ownerId: cardUpd.ownerId,
+          cardType: cardUpd.cardType,
+        })
+        .where(eq(cardsTable.cardId, cardUpd.cardId))
+        .returning();
+      return newCard;
+    }
+
     const newCard = await database
       .update(cardsTable)
       .set({
@@ -41,7 +55,7 @@ export class CardsRepository {
     return newCard;
   }
 
-  static async deleteCard(id: number): Promise<Card[] | null> {
+  static async deleteCard(id: number): Promise<Card[] | []> {
     const deletedCard = await database
       .delete(cardsTable)
       .where(eq(cardsTable.cardId, id))

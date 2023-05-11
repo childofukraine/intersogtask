@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { notFound } from "@hapi/boom";
+import { badRequest, notFound } from "@hapi/boom";
 import {
   CreateCardRequest,
   CreateCardResponse,
@@ -21,6 +21,11 @@ export class CardsController {
   ) => {
     try {
       const { id, cardname, ownerid, cardtype } = req.body;
+
+      // проверяем есть ли карточка с таким id, если уже существуем выкидываем ошибку
+      const cardExist = await CardsRepository.getCardById(id);
+
+      if (cardExist.length) throw badRequest();
 
       const newCard = new Card(id, cardname, ownerid, cardtype);
 
@@ -44,7 +49,7 @@ export class CardsController {
 
       if (!cards) throw notFound();
 
-      res.json({ data: cards });
+      res.json({ message: "Your cards", data: cards });
     } catch (err) {
       next(err);
     }
@@ -61,7 +66,7 @@ export class CardsController {
 
       if (!card) throw notFound();
 
-      res.json({ data: card });
+      res.json({ message: "Your card", data: card });
     } catch (err) {
       next(err);
     }
@@ -73,12 +78,29 @@ export class CardsController {
     next
   ) => {
     const { id } = req.params;
+
+    let idBody: number;
+
     const { cardname, ownerid, cardtype } = req.body;
 
+    // проверяем наличие id в body запроса
+    if (req.body.id) {
+      idBody = req.body.id!; // если он есть, берем его оттуда
+    } else {
+      idBody = Number(req.params.id); // если его нет, берем из параметров запроса
+    }
+
     try {
+      // проверяем,нет ли в бд,карточки с таким id
+      if (req.body.id) {
+        const cardExist = await CardsRepository.getCardById(idBody);
+
+        if (cardExist.length) throw badRequest();
+      }
+
       const card = new Card(+id, cardname, ownerid, cardtype);
 
-      const newCard = await CardsRepository.editCard(card);
+      const newCard = await CardsRepository.editCard(idBody, card);
 
       if (!card) throw notFound();
 
