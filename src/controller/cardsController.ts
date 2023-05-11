@@ -22,7 +22,7 @@ export class CardsController {
     try {
       const { id, cardname, ownerid, cardtype } = req.body;
 
-      // проверяем есть ли карточка с таким id, если уже существуем выкидываем ошибку
+      // check if there is a card with the same id, if it already exists throw an error
       const cardExist = await CardsRepository.getCardById(id);
 
       if (cardExist.length) throw badRequest();
@@ -83,15 +83,15 @@ export class CardsController {
 
     const { cardname, ownerid, cardtype } = req.body;
 
-    // проверяем наличие id в body запроса
+    // check if the id is present in the body of the request
     if (req.body.id) {
-      idBody = req.body.id!; // если он есть, берем его оттуда
+      idBody = req.body.id!; // if it exists, take it from body
     } else {
-      idBody = Number(req.params.id); // если его нет, берем из параметров запроса
+      idBody = Number(req.params.id); // if it is not in body, we take it from the request parameters
     }
 
     try {
-      // проверяем,нет ли в бд,карточки с таким id
+      // check if there is a card with this id in the database
       if (req.body.id) {
         const cardExist = await CardsRepository.getCardById(idBody);
 
