@@ -36,4 +36,3 @@
 #### body: none
 #### Delete card by id
 #
-вв
